@@ -7,7 +7,7 @@ The purpose behind the Bitte chat adoption is to enable users to interact with D
 
 ## Agent Links
 
-- [Server URL]()
+- [Server URL](https://dexalot-agent.vercel.app/)
 - [Bitte Playground Agent Link]()
 
 ## MVP Goals
