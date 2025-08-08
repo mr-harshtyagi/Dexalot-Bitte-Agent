@@ -26,7 +26,7 @@ Later Phase 2 will focus on agent based trading and order management.
 - This agent is built using bitte-ai/agent-sdk to standardize agent behavior and communication. Phase 1 Implemented tools are as follows:
 
   - `get-wallet-balances`
-  - `get-btc-balance`
+  - `get-dexalot-portfolio`
 
 - Each tool is registered in the AI plugin manifest at : `/api/ai-plugin`
 
