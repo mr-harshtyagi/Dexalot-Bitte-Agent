@@ -138,8 +138,8 @@ export async function GET() {
         dataFormat: "currency",
         metricLabels: ["Token", "Balance"],
         dataPoints: [
-          [Date(), 10.5],
-          [Date(), 2.0],
+          [Date(), 0],
+          [Date(), 5.857],
         ],
       },
     };
