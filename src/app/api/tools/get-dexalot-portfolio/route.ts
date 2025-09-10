@@ -19,7 +19,7 @@ interface DexalotPortfolioResponse {
   chartData?: {
     title: string;
     description: string;
-    chartType: "bar";
+    chartType: "bar" | "line" | "area";
     dataFormat: "currency";
     metricLabels: string[];
     dataPoints: Array<[string, number]>;
@@ -138,8 +138,8 @@ export async function GET() {
         dataFormat: "currency",
         metricLabels: ["Token", "Balance"],
         dataPoints: [
-          ["AVAX", 10.5],
-          ["ETH", 2.0],
+          [Date(), 10.5],
+          [Date(), 2.0],
         ],
       },
     };

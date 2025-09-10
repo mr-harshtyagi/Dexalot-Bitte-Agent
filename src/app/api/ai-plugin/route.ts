@@ -115,13 +115,13 @@ export async function GET() {
                               items: {
                                 oneOf: [
                                   {
-                                    type: "string"
+                                    type: "string",
                                   },
                                   {
-                                    type: "number"
-                                  }
-                                ]
-                              }
+                                    type: "number",
+                                  },
+                                ],
+                              },
                             },
                             description:
                               "Chart data points as [symbol, balance] pairs",
@@ -137,7 +137,7 @@ export async function GET() {
                         ],
                       },
                     },
-                    required: ["balances", "chartData"],
+                    required: ["balances"],
                   },
                 },
               },
