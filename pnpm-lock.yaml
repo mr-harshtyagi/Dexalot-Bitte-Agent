@@ -13,10 +13,10 @@ importers:
         version: 0.1.11(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)
       '@bitte-ai/chat':
         specifier: ^0.8.2
-        version: 0.8.2(xbis7yfnqmgjo3c73epycach5a)
+        version: 0.8.2(f9a9b33741bb6587e609f448cb9d4929)
       '@bitte-ai/react':
-        specifier: ^0.8.2
-        version: 0.8.3(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(graphql@16.11.0)(near-api-js@5.0.0)
+        specifier: latest
+        version: 0.8.3(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(graphql@16.11.0)(near-api-js@5.1.1)
       '@radix-ui/react-dialog':
         specifier: ^1.1.13
         version: 1.1.14(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -6424,13 +6424,13 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@bitte-ai/chat@0.8.2(xbis7yfnqmgjo3c73epycach5a)':
+  '@bitte-ai/chat@0.8.2(f9a9b33741bb6587e609f448cb9d4929)':
     dependencies:
       '@ai-sdk/anthropic': 1.2.12(zod@3.25.76)
       '@ai-sdk/openai': 1.3.23(zod@3.25.76)
       '@ai-sdk/react': 1.2.12(react@19.1.1)(zod@3.25.76)
       '@ai-sdk/xai': 1.2.18(zod@3.25.76)
-      '@bitte-ai/types': 0.2.2(@mysten/sui@1.37.1(typescript@5.9.2))(@near-wallet-selector/core@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0))(@suiet/wallet-kit@0.3.8(@mysten/sui@1.37.1(typescript@5.9.2))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2))(ai@4.3.19(react@19.1.1)(zod@3.25.76))(near-api-js@5.0.0)(openapi-types@12.1.3)(react@19.1.1)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.16.1(@tanstack/query-core@5.83.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@types/react@19.1.9)(bufferutil@4.0.9)(react@19.1.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(zod@3.25.76))
+      '@bitte-ai/types': 0.2.2(@mysten/sui@1.37.1(typescript@5.9.2))(@near-wallet-selector/core@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1))(@suiet/wallet-kit@0.3.8(@mysten/sui@1.37.1(typescript@5.9.2))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2))(ai@4.3.19(react@19.1.1)(zod@3.25.76))(near-api-js@5.1.1)(openapi-types@12.1.3)(react@19.1.1)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.16.1(@tanstack/query-core@5.83.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@types/react@19.1.9)(bufferutil@4.0.9)(react@19.1.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(zod@3.25.76))
       '@mintbase-js/data': 0.6.6(graphql@16.11.0)
       '@mintbase-js/rpc': 0.6.6
       '@mysten/sui': 1.37.1(typescript@5.9.2)
@@ -6450,7 +6450,7 @@ snapshots:
       lucide-react: 0.462.0(react@19.1.1)
       near-api-js: 5.1.1
       near-safe: 0.9.8(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)
-      openai: 4.104.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.76)
+      openai: 4.104.0(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.76)
       openapi-types: 12.1.3
       randombytes: 2.1.0
       react: 19.1.1
@@ -6504,15 +6504,15 @@ snapshots:
       - utf-8-validate
       - ws
 
-  '@bitte-ai/react@0.8.3(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(graphql@16.11.0)(near-api-js@5.0.0)':
+  '@bitte-ai/react@0.8.3(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(graphql@16.11.0)(near-api-js@5.1.1)':
     dependencies:
       '@bitte-ai/wallet': 0.8.2
       '@mintbase-js/data': 0.6.6(graphql@16.11.0)
       '@mintbase-js/sdk': 0.6.6
-      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0)
-      '@near-wallet-selector/here-wallet': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(near-api-js@5.0.0)
+      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)
+      '@near-wallet-selector/here-wallet': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(near-api-js@5.1.1)
       '@near-wallet-selector/meteor-wallet': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)
-      '@near-wallet-selector/modal-ui': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0)
+      '@near-wallet-selector/modal-ui': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)
       '@near-wallet-selector/my-near-wallet': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)
       buffer: 6.0.3
       react: 19.1.1
@@ -6529,13 +6529,13 @@ snapshots:
       - graphql
       - near-api-js
 
-  '@bitte-ai/types@0.2.2(@mysten/sui@1.37.1(typescript@5.9.2))(@near-wallet-selector/core@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0))(@suiet/wallet-kit@0.3.8(@mysten/sui@1.37.1(typescript@5.9.2))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2))(ai@4.3.19(react@19.1.1)(zod@3.25.76))(near-api-js@5.0.0)(openapi-types@12.1.3)(react@19.1.1)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.16.1(@tanstack/query-core@5.83.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@types/react@19.1.9)(bufferutil@4.0.9)(react@19.1.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(zod@3.25.76))':
+  '@bitte-ai/types@0.2.2(@mysten/sui@1.37.1(typescript@5.9.2))(@near-wallet-selector/core@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1))(@suiet/wallet-kit@0.3.8(@mysten/sui@1.37.1(typescript@5.9.2))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2))(ai@4.3.19(react@19.1.1)(zod@3.25.76))(near-api-js@5.1.1)(openapi-types@12.1.3)(react@19.1.1)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.16.1(@tanstack/query-core@5.83.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@types/react@19.1.9)(bufferutil@4.0.9)(react@19.1.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))(zod@3.25.76))':
     dependencies:
       '@mysten/sui': 1.37.1(typescript@5.9.2)
-      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0)
+      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)
       '@suiet/wallet-kit': 0.3.8(@mysten/sui@1.37.1(typescript@5.9.2))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)
       ai: 4.3.19(react@19.1.1)(zod@3.25.76)
-      near-api-js: 5.0.0
+      near-api-js: 5.1.1
       openapi-types: 12.1.3
       react: 19.1.1
       viem: 2.29.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)
@@ -7658,10 +7658,23 @@ snapshots:
       - '@near-js/keystores'
       - '@near-js/transactions'
 
-  '@near-wallet-selector/here-wallet@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(near-api-js@5.0.0)':
+  '@near-wallet-selector/core@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)':
+    dependencies:
+      '@near-js/signers': 2.1.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)
+      borsh: 2.0.0
+      events: 3.3.0
+      js-sha256: 0.9.0
+      near-api-js: 5.1.1
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - '@near-js/crypto'
+      - '@near-js/keystores'
+      - '@near-js/transactions'
+
+  '@near-wallet-selector/here-wallet@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(bn.js@5.2.2)(borsh@2.0.0)(near-api-js@5.1.1)':
     dependencies:
       '@here-wallet/core': 3.4.0(bn.js@5.2.2)(borsh@2.0.0)
-      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0)
+      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)
     transitivePeerDependencies:
       - '@near-js/crypto'
       - '@near-js/keystores'
@@ -7682,9 +7695,9 @@ snapshots:
       - '@near-js/transactions'
       - encoding
 
-  '@near-wallet-selector/modal-ui@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0)':
+  '@near-wallet-selector/modal-ui@9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)':
     dependencies:
-      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.0.0)
+      '@near-wallet-selector/core': 9.2.0(@near-js/crypto@1.4.2)(@near-js/keystores@0.2.2)(@near-js/transactions@1.3.3)(near-api-js@5.1.1)
       copy-to-clipboard: 3.3.3
       qrcode: 1.5.4
       react: 18.3.1
@@ -12081,7 +12094,7 @@ snapshots:
       is-inside-container: 1.0.0
       wsl-utils: 0.1.0
 
-  openai@4.104.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.76):
+  openai@4.104.0(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.76):
     dependencies:
       '@types/node': 18.19.121
       '@types/node-fetch': 2.6.13
@@ -12091,7 +12104,7 @@ snapshots:
       formdata-node: 4.4.1
       node-fetch: 2.7.0
     optionalDependencies:
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       zod: 3.25.76
     transitivePeerDependencies:
       - encoding

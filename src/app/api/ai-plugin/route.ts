@@ -23,18 +23,12 @@ export async function GET() {
          Dexalot is a decentralized exchange (DEX) designed to look and feel like a centralized exchange while running on Avalanche. 
          It supports order-book style trading and aims to provide transparency, efficiency, and low-cost transactions.
         Here is what you can do as Dexalot AI Agent:
-        You give information about user's wallet balances on other chains and a summary of assets on supported chains.
-        You give information about user's dexalot portfolio. Use the 'get-dexalot-portfolio' tool to get information about user's dexalot portfolio balance. This uses a signed endpoint so follow these steps:
-        1. First use "generate-evm-tx" tool to get a signature from user's connected wallet for the data "dexalot" 
-        2. Take the returned signature and format it as [ADDRESS:SIGNATURE] 
-        3. Use this formatted signature in the 'get-dexalot-portfolio' tool along with token symbol to get user's portfolio balance
-        4. The tool will return detailed balance information including available, locked, and total balance for each asset
-        Use 'get-all-active-pairs' tool to get information about all active trading pairs on Dexalot.
-        Use 'get-asset-pair-information' tool to get information about a specific asset on Dexalot if user asks if the token is available on platform for trading. Explicitly ask user for asset symbol to get details about the asset.
-        You can create deposits on Avalanche-C chain using 'create-deposit-txn' tool to create transaction and then use response in 'generate-evm-tx' tool to get that transaction signed. Make sure selected network in wallet when using this tool is Avalanche-C chain.
-        For deposits using other chains, use "intents" tool to bridge assets to Avalanche-C chain and use user's connected wallet as withdrawal address. 
+        - You give information about user's wallet balances on other chains and a summary of assets on supported chains.
+        - You give information about user's dexalot portfolio. Use the 'get-dexalot-portfolio' tool to get information about user's dexalot portfolio balance. Then use 'render-chart' primitive tool to display portfolio chart.
+        - Use 'get-all-active-pairs' tool to get information about all active trading pairs on Dexalot.
+        - Use 'get-asset-pair-information' tool to get information about a specific asset on Dexalot if user asks if the token is available on platform for trading. Explicitly ask user for asset symbol to get details about the asset.
         `,
-        tools: [{ type: "generate-evm-tx" }, { type: "intents" }],
+        tools: [{ type: "render-chart" }],
         image:
           "https://pbs.twimg.com/profile_images/1905272093492572160/3ilOLKT8_400x400.png",
         categories: ["DeX", "Trading", "Portfolio"],
@@ -402,122 +396,6 @@ export async function GET() {
                         type: "string",
                         description:
                           "Error message indicating no pairs found for the token",
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            "500": {
-              description: "Internal server error",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      error: {
-                        type: "string",
-                        description: "Error message",
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      "/api/tools/create-deposit-txn": {
-        post: {
-          operationId: "create-deposit-txn",
-          summary: "Create deposit transaction payload for Dexalot",
-          description:
-            "Creates a transaction payload for depositing tokens into Dexalot Portfolio Main contract on Avalanche-C chain",
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": {
-                schema: {
-                  type: "object",
-                  properties: {
-                    token: {
-                      type: "string",
-                      description: "Token symbol to deposit (e.g., USDC, AVAX)",
-                    },
-                    amount: {
-                      type: "string",
-                      description: "Amount to deposit in wei/smallest unit",
-                    },
-                    bridge: {
-                      type: "number",
-                      description:
-                        "Bridge identifier (optional, defaults to 2)",
-                      default: 2,
-                    },
-                  },
-                  required: ["token", "amount"],
-                },
-              },
-            },
-          },
-          responses: {
-            "200": {
-              description: "Transaction payload created successfully",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      to: {
-                        type: "string",
-                        description: "Contract address to send transaction to",
-                      },
-                      data: {
-                        type: "string",
-                        description: "Encoded function call data",
-                      },
-                      value: {
-                        type: "string",
-                        description:
-                          "ETH value to send (usually '0' for token deposits)",
-                      },
-                      chainId: {
-                        type: "number",
-                        description: "Chain ID for Avalanche-C (43114)",
-                      },
-                    },
-                    required: ["to", "data", "value", "chainId"],
-                  },
-                },
-              },
-            },
-            "400": {
-              description:
-                "Bad request - invalid parameters or insufficient balance",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      error: {
-                        type: "string",
-                        description: "Error message",
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            "401": {
-              description: "Unauthorized - user not authenticated",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      error: {
-                        type: "string",
-                        description: "Error message",
                       },
                     },
                   },

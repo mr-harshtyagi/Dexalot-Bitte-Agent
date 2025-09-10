@@ -21,6 +21,29 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <div
+        style={{
+          position: "fixed",
+          bottom: "32px",
+          right: "32px",
+          width: "500px",
+          height: "600px",
+          zIndex: 1000,
+          pointerEvents: "none", // allow clicks to pass through by default
+        }}
+      >
+        <iframe
+          src="/widget-iframe"
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "16px",
+            pointerEvents: "auto", // allow interaction with the widget
+          }}
+          title="Chat Widget"
+        />
+      </div>
     </div>
   );
 }

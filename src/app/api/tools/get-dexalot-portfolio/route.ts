@@ -28,7 +28,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const url = new URL("https://api.dexalot-test.com/privapi/signed/portfoliobalance");
+    const url = new URL(
+      "https://api.dexalot-test.com/privapi/signed/portfoliobalance"
+    );
     if (symbol) {
       url.searchParams.append("symbol", symbol);
     }
