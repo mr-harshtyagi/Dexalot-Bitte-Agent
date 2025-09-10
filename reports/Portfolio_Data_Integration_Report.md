@@ -27,9 +27,6 @@ Desired unified portfolio response:
 {
   "traderaddress": "0xce96e120420dc73394491ab941d3bc6168d6c93e",
   "symbol": "ALOT",
-  "trades": "-20",
-  "xfers": "990",
-  "fee": "0",
   "currentbal": "970"
 }
 ```
