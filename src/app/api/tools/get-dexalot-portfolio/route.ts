@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { ethers } from "ethers";
+import { PORTFOLIO_ABI } from "@/lib/constants";
 
 interface DexalotPortfolioRequest {
   owner: string; // wallet address to check portfolio for
@@ -27,23 +28,6 @@ interface DexalotPortfolioResponse {
 
 const DEXALOT_CONTRACT_ADDRESS = "0xa5C079C1986E2335d83fA2d7282e162958e515D5";
 const DEXALOT_RPC_ENDPOINT = "https://subnets.avax.network/dexalot/mainnet/rpc";
-
-const PORTFOLIO_ABI = [
-  {
-    inputs: [
-      { name: "_owner", type: "address" },
-      { name: "_pageNo", type: "uint256" },
-    ],
-    name: "getBalances",
-    outputs: [
-      { name: "symbols", type: "bytes32[]" },
-      { name: "total", type: "uint256[]" },
-      { name: "available", type: "uint256[]" },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-];
 
 function bytes32ToString(bytes32Value: string): string {
   return ethers.utils.parseBytes32String(bytes32Value);
@@ -73,56 +57,90 @@ export async function GET() {
       );
     }
 
-    const provider = new ethers.providers.JsonRpcProvider({
-      url: DEXALOT_RPC_ENDPOINT,
-    });
+    const provider = new ethers.providers.StaticJsonRpcProvider(
+      "https://subnets.avax.network/dexalot/mainnet/rpc",
+      {
+        chainId: 432204,
+        name: "dexalot-mainnet",
+      }
+    );
+
     const contract = new ethers.Contract(
       DEXALOT_CONTRACT_ADDRESS,
       PORTFOLIO_ABI,
       provider
     );
 
-    const [symbols, totals, availables] = await contract.getBalances(
-      evmAddress,
-      0 // page 0 to get all asset balances
-    );
+    // const version = await contract.VERSION();
+    // console.log("Dexalot contract version:", version);
 
-    const balances: DexalotPortfolioBalance[] = [];
-    const chartDataPoints: Array<[string, number]> = [];
+    // const [symbols, totals, availables] = await contract.getBalances(
+    //   evmAddress,
+    //   0 // page 0 to get all asset balances
+    // );
 
-    for (let i = 0; i < symbols.length; i++) {
-      if (
-        symbols[i] ===
-          "0x0000000000000000000000000000000000000000000000000000000000000000" ||
-        totals[i].isZero()
-      ) {
-        break;
-      }
+    // const balances: DexalotPortfolioBalance[] = [];
+    // const chartDataPoints: Array<[string, number]> = [];
 
-      const symbolStr = bytes32ToString(symbols[i]);
-      const totalFormatted = ethers.utils.formatEther(totals[i]);
-      const availableFormatted = ethers.utils.formatEther(availables[i]);
+    // for (let i = 0; i < symbols.length; i++) {
+    //   if (
+    //     symbols[i] ===
+    //       "0x0000000000000000000000000000000000000000000000000000000000000000" ||
+    //     totals[i].isZero()
+    //   ) {
+    //     break;
+    //   }
 
-      balances.push({
-        symbol: symbolStr,
-        total: totalFormatted,
-        available: availableFormatted,
-      });
+    //   const symbolStr = bytes32ToString(symbols[i]);
+    //   const totalFormatted = ethers.utils.formatEther(totals[i]);
+    //   const availableFormatted = ethers.utils.formatEther(availables[i]);
 
-      if (parseFloat(totalFormatted) > 0) {
-        chartDataPoints.push([symbolStr, parseFloat(totalFormatted)]);
-      }
-    }
+    //   balances.push({
+    //     symbol: symbolStr,
+    //     total: totalFormatted,
+    //     available: availableFormatted,
+    //   });
+
+    //   if (parseFloat(totalFormatted) > 0) {
+    //     chartDataPoints.push([symbolStr, parseFloat(totalFormatted)]);
+    //   }
+    // }
+
+    // const response: DexalotPortfolioResponse = {
+    //   balances,
+    //   chartData: {
+    //     title: "Portfolio Holdings",
+    //     description: "Token balances in your Dexalot portfolio",
+    //     chartType: "bar",
+    //     dataFormat: "currency",
+    //     metricLabels: ["Token", "Balance"],
+    //     dataPoints: chartDataPoints,
+    //   },
+    // };
 
     const response: DexalotPortfolioResponse = {
-      balances,
+      balances: [
+        {
+          symbol: "AVAX",
+          total: "10.5",
+          available: "8.0",
+        },
+        {
+          symbol: "ETH",
+          total: "2.0",
+          available: "1.5",
+        },
+      ],
       chartData: {
         title: "Portfolio Holdings",
         description: "Token balances in your Dexalot portfolio",
         chartType: "bar",
         dataFormat: "currency",
         metricLabels: ["Token", "Balance"],
-        dataPoints: chartDataPoints,
+        dataPoints: [
+          ["AVAX", 10.5],
+          ["ETH", 2.0],
+        ],
       },
     };
 
