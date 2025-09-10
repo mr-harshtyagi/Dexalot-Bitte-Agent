@@ -1,66 +1,136 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { ethers } from "ethers";
 
 interface DexalotPortfolioRequest {
-  signature: string; // x-signature header value from user's wallet signature
-  symbol?: string; // token symbol to filter, optional
+  owner: string; // wallet address to check portfolio for
+  pageNo?: number; // page number for pagination, defaults to 0
 }
 
 interface DexalotPortfolioBalance {
   symbol: string;
-  balance: string;
+  total: string;
   available: string;
-  locked: string;
 }
 
 interface DexalotPortfolioResponse {
   balances: DexalotPortfolioBalance[];
+  chartData?: {
+    title: string;
+    description: string;
+    chartType: "bar";
+    dataFormat: "currency";
+    metricLabels: string[];
+    dataPoints: Array<[string, number]>;
+  };
 }
 
-export async function POST(request: Request) {
-  try {
-    const body: DexalotPortfolioRequest = await request.json();
-    const { signature, symbol } = body;
+const DEXALOT_CONTRACT_ADDRESS = "0xa5C079C1986E2335d83fA2d7282e162958e515D5";
+const DEXALOT_RPC_ENDPOINT = "https://subnets.avax.network/dexalot/mainnet/rpc";
 
-    if (!signature) {
+const PORTFOLIO_ABI = [
+  {
+    inputs: [
+      { name: "_owner", type: "address" },
+      { name: "_pageNo", type: "uint256" },
+    ],
+    name: "getBalances",
+    outputs: [
+      { name: "symbols", type: "bytes32[]" },
+      { name: "total", type: "uint256[]" },
+      { name: "available", type: "uint256[]" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
+
+function bytes32ToString(bytes32Value: string): string {
+  return ethers.utils.parseBytes32String(bytes32Value);
+}
+
+export async function GET() {
+  try {
+    const mbMetadataHeader = (await headers()).get("mb-metadata");
+    const mbMetadata: { evmAddress: string } =
+      mbMetadataHeader && JSON.parse(mbMetadataHeader);
+
+    const { evmAddress } = mbMetadata || {};
+
+    console.log("Dexalot portfolio request for address:", evmAddress);
+
+    if (!evmAddress) {
       return NextResponse.json(
-        { error: "Signature is required" },
+        { error: "Owner address is required. Make sure wallet is connected" },
         { status: 400 }
       );
     }
 
-    const url = new URL(
-      "https://api.dexalot-test.com/privapi/signed/portfoliobalance"
-    );
-    if (symbol) {
-      url.searchParams.append("symbol", symbol);
-    }
-
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        "x-signature": signature,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
+    if (!ethers.utils.isAddress(evmAddress)) {
       return NextResponse.json(
-        {
-          error: `Failed to fetch portfolio from Dexalot API: ${response.status} ${response.statusText}`,
-          details: errorText,
-        },
-        { status: response.status }
+        { error: "Invalid owner address format" },
+        { status: 400 }
       );
     }
 
-    const data: DexalotPortfolioResponse = await response.json();
+    const provider = new ethers.providers.JsonRpcProvider({
+      url: DEXALOT_RPC_ENDPOINT,
+    });
+    const contract = new ethers.Contract(
+      DEXALOT_CONTRACT_ADDRESS,
+      PORTFOLIO_ABI,
+      provider
+    );
 
-    return NextResponse.json(data, { status: 200 });
+    const [symbols, totals, availables] = await contract.getBalances(
+      evmAddress,
+      0 // page 0 to get all asset balances
+    );
+
+    const balances: DexalotPortfolioBalance[] = [];
+    const chartDataPoints: Array<[string, number]> = [];
+
+    for (let i = 0; i < symbols.length; i++) {
+      if (
+        symbols[i] ===
+          "0x0000000000000000000000000000000000000000000000000000000000000000" ||
+        totals[i].isZero()
+      ) {
+        break;
+      }
+
+      const symbolStr = bytes32ToString(symbols[i]);
+      const totalFormatted = ethers.utils.formatEther(totals[i]);
+      const availableFormatted = ethers.utils.formatEther(availables[i]);
+
+      balances.push({
+        symbol: symbolStr,
+        total: totalFormatted,
+        available: availableFormatted,
+      });
+
+      if (parseFloat(totalFormatted) > 0) {
+        chartDataPoints.push([symbolStr, parseFloat(totalFormatted)]);
+      }
+    }
+
+    const response: DexalotPortfolioResponse = {
+      balances,
+      chartData: {
+        title: "Portfolio Holdings",
+        description: "Token balances in your Dexalot portfolio",
+        chartType: "bar",
+        dataFormat: "currency",
+        metricLabels: ["Token", "Balance"],
+        dataPoints: chartDataPoints,
+      },
+    };
+
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error("Error fetching Dexalot portfolio:", error);
     return NextResponse.json(
-      { error: "Failed to get portfolio balance" },
+      { error: "Failed to get portfolio balance from contract" },
       { status: 500 }
     );
   }

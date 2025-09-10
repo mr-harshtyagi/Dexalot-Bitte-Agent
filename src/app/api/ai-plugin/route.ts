@@ -38,34 +38,11 @@ export async function GET() {
     },
     paths: {
       "/api/tools/get-dexalot-portfolio": {
-        post: {
+        get: {
           summary: "Get dexalot portfolio of connected user",
           description:
-            "Retrieve user's dexalot portfolio balance information using wallet signature authentication",
+            "Retrieve user's dexalot portfolio balance information using contract interaction with Dexalot subnet",
           operationId: "get-dexalot-portfolio",
-          requestBody: {
-            required: true,
-            content: {
-              "application/json": {
-                schema: {
-                  type: "object",
-                  properties: {
-                    signature: {
-                      type: "string",
-                      description:
-                        "Wallet signature in format [ADDRESS:SIGNATURE] from signing 'dexalot'",
-                    },
-                    symbol: {
-                      type: "string",
-                      description:
-                        "Optional token symbol to filter results (e.g., ALOT, USDC)",
-                    },
-                  },
-                  required: ["signature"],
-                },
-              },
-            },
-          },
           responses: {
             "200": {
               description: "Successful response",
@@ -85,29 +62,82 @@ export async function GET() {
                               type: "string",
                               description: "Asset symbol (e.g., ALOT, USDC)",
                             },
-                            balance: {
+                            total: {
                               type: "string",
-                              description: "Total balance as string",
+                              description:
+                                "Total balance as string in ether format",
                             },
                             available: {
                               type: "string",
-                              description: "Available balance for trading",
-                            },
-                            locked: {
-                              type: "string",
-                              description: "Locked balance in orders",
+                              description:
+                                "Available balance for trading in ether format",
                             },
                           },
-                          required: [
-                            "symbol",
-                            "balance",
-                            "available",
-                            "locked",
-                          ],
+                          required: ["symbol", "total", "available"],
                         },
                       },
+                      chartData: {
+                        type: "object",
+                        description:
+                          "Chart data formatted for render-chart tool",
+                        properties: {
+                          title: {
+                            type: "string",
+                            description: "Chart title",
+                          },
+                          description: {
+                            type: "string",
+                            description: "Chart description",
+                          },
+                          chartType: {
+                            type: "string",
+                            enum: ["bar"],
+                            description: "Type of chart",
+                          },
+                          dataFormat: {
+                            type: "string",
+                            enum: ["currency"],
+                            description: "Data format for display",
+                          },
+                          metricLabels: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                            description: "Labels for chart metrics",
+                          },
+                          dataPoints: {
+                            type: "array",
+                            items: {
+                              type: "array",
+                              minItems: 2,
+                              maxItems: 2,
+                              items: {
+                                oneOf: [
+                                  {
+                                    type: "string"
+                                  },
+                                  {
+                                    type: "number"
+                                  }
+                                ]
+                              }
+                            },
+                            description:
+                              "Chart data points as [symbol, balance] pairs",
+                          },
+                        },
+                        required: [
+                          "title",
+                          "description",
+                          "chartType",
+                          "dataFormat",
+                          "metricLabels",
+                          "dataPoints",
+                        ],
+                      },
                     },
-                    required: ["balances"],
+                    required: ["balances", "chartData"],
                   },
                 },
               },

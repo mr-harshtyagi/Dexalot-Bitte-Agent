@@ -8,6 +8,7 @@ export default function WidgetIframePage() {
   return (
     <div style={{ background: "transparent" }}>
       <BitteWidgetChat
+        historyApiUrl="/api/history"
         agentId="dexalot-bitte-agent.vercel.app"
         apiUrl="/api/chat"
         wallet={{}}
