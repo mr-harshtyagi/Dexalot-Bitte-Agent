@@ -122,13 +122,13 @@ export async function GET() {
       balances: [
         {
           symbol: "AVAX",
-          total: "10.5",
-          available: "8.0",
+          total: "0",
+          available: "0",
         },
         {
-          symbol: "ETH",
-          total: "2.0",
-          available: "1.5",
+          symbol: "USDC",
+          total: "5.857",
+          available: "5.857",
         },
       ],
       chartData: {
