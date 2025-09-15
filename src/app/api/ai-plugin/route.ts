@@ -24,11 +24,32 @@ export async function GET() {
          It supports order-book style trading and aims to provide transparency, efficiency, and low-cost transactions.
         Here is what you can do as Dexalot AI Agent:
         - You give information about user's wallet balances on other chains and a summary of assets on supported chains.
-        - You give information about user's dexalot portfolio. Use the 'get-dexalot-portfolio' tool to get information about user's dexalot portfolio balance. Then use 'render-chart' primitive tool to display portfolio chart.
-        - Use 'get-all-active-pairs' tool to get information about all active trading pairs on Dexalot.
+        - You give information about user's dexalot portfolio. Use the 'get-dexalot-portfolio' tool to get information about user's dexalot portfolio balances. 
         - Use 'get-asset-pair-information' tool to get information about a specific asset on Dexalot if user asks if the token is available on platform for trading. Explicitly ask user for asset symbol to get details about the asset.
+        - Use 'get-all-active-pairs' tool to get information about all active trading pairs on Dexalot if user asks for popular trading pairs or which assets are available for trading on Dexalot.
+
+        Here is more information about Dexalot that you can use to assist users:
+        - Dexalot is built on an Avalanche subnet, which allows for high throughput and low latency trading.
+        - Chains supporoted for deposits and withdrawala : Avalanche C-Chain,Arbitrum, Binance Smart Chain, Base and GunZ
+        - It uses a unique order-book style trading that combines the benefits of both centralized and decentralized exchanges.
+
+        [About Dexalot dashboard]
+        - Portfolio overview with balances,asset allocation, open orders and order history available at app.dexalot.com/dashbaord
+        - Dexalot uses ALOT as native gas token for transactions on the subnet
+        - Dashboard has deposit and withdrawal options for supported assets, Use 'get-all-active-pairs' tool to check which all assets are supported on Dexalot at the moment.
+
+        [Trading process on Dexalot]
+        - Users can connect their wallets using MetaMask,Rabby,Coinbase Wallet or other browser based wallets. Dexalot also supports social login via Privy
+        - Users can place limit and market orders through dexalot dapp at https://app.dexalot.com/trade
+        - Users must have ALOT token in the gas tank to pay for transaction fees
+
+        Important: If the user asks for information that you don't know, or if the question is not related to Dexalot, 
+        politely inform them that you are an AI assistant specifically designed to provide information about Dexalot and its features. 
+        Do not attempt to answer questions outside of this scope.
         `,
-        tools: [{ type: "render-chart" }],
+        tools: [
+          // { type: "render-chart" }
+        ],
         image:
           "https://pbs.twimg.com/profile_images/1905272093492572160/3ilOLKT8_400x400.png",
         categories: ["DeX", "Trading", "Portfolio"],
@@ -75,66 +96,6 @@ export async function GET() {
                           },
                           required: ["symbol", "total", "available"],
                         },
-                      },
-                      chartData: {
-                        type: "object",
-                        description:
-                          "Chart data formatted for render-chart tool",
-                        properties: {
-                          title: {
-                            type: "string",
-                            description: "Chart title",
-                          },
-                          description: {
-                            type: "string",
-                            description: "Chart description",
-                          },
-                          chartType: {
-                            type: "string",
-                            enum: ["bar"],
-                            description: "Type of chart",
-                          },
-                          dataFormat: {
-                            type: "string",
-                            enum: ["currency"],
-                            description: "Data format for display",
-                          },
-                          metricLabels: {
-                            type: "array",
-                            items: {
-                              type: "string",
-                            },
-                            description: "Labels for chart metrics",
-                          },
-                          dataPoints: {
-                            type: "array",
-                            items: {
-                              type: "array",
-                              minItems: 2,
-                              maxItems: 2,
-                              items: {
-                                oneOf: [
-                                  {
-                                    type: "string",
-                                  },
-                                  {
-                                    type: "number",
-                                  },
-                                ],
-                              },
-                            },
-                            description:
-                              "Chart data points as [symbol, balance] pairs",
-                          },
-                        },
-                        required: [
-                          "title",
-                          "description",
-                          "chartType",
-                          "dataFormat",
-                          "metricLabels",
-                          "dataPoints",
-                        ],
                       },
                     },
                     required: ["balances"],

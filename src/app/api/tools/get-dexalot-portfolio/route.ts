@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { ethers } from "ethers";
-import { PORTFOLIO_ABI } from "@/lib/constants";
+import {
+  JsonRpcProvider,
+  Contract,
+  getBytes,
+  toUtf8String,
+  isAddress,
+} from "ethers";
+import { PORTFOLIO_ABI, TOKEN_DETAILS } from "@/lib/constants";
 
 interface DexalotPortfolioRequest {
   owner: string; // wallet address to check portfolio for
@@ -16,21 +22,19 @@ interface DexalotPortfolioBalance {
 
 interface DexalotPortfolioResponse {
   balances: DexalotPortfolioBalance[];
-  chartData?: {
-    title: string;
-    description: string;
-    chartType: "bar" | "line" | "area";
-    dataFormat: "currency";
-    metricLabels: string[];
-    dataPoints: Array<[string, number]>;
-  };
 }
 
-const DEXALOT_CONTRACT_ADDRESS = "0xa5C079C1986E2335d83fA2d7282e162958e515D5";
-const DEXALOT_RPC_ENDPOINT = "https://subnets.avax.network/dexalot/mainnet/rpc";
+const RPC_URL = "https://subnets.avax.network/dexalot/mainnet/rpc";
+const CHAIN_ID = 432204; // Dexalot Subnet
+const NETWORK_NAME = "Dexalot Subnet";
+const PORTFOLIO_SUB = "0xa5C079C1986E2335d83fA2d7282e162958e515D5";
 
-function bytes32ToString(bytes32Value: string): string {
-  return ethers.utils.parseBytes32String(bytes32Value);
+// Decode bytes32 (trim trailing zeros)
+function bytes32ToString(hex: string) {
+  const bytes = getBytes(hex);
+  const zeroIndex = bytes.findIndex((b) => b === 0);
+  const view = zeroIndex === -1 ? bytes : bytes.slice(0, zeroIndex);
+  return toUtf8String(view);
 }
 
 export async function GET() {
@@ -45,103 +49,55 @@ export async function GET() {
 
     if (!evmAddress) {
       return NextResponse.json(
-        { error: "Owner address is required. Make sure wallet is connected" },
+        { error: "Wallet address is required. Make sure wallet is connected" },
         { status: 400 }
       );
     }
 
-    if (!ethers.utils.isAddress(evmAddress)) {
-      return NextResponse.json(
-        { error: "Invalid owner address format" },
-        { status: 400 }
-      );
-    }
+    const provider = new JsonRpcProvider(RPC_URL, {
+      name: NETWORK_NAME,
+      chainId: CHAIN_ID,
+    });
+    const contract = new Contract(PORTFOLIO_SUB, PORTFOLIO_ABI, provider);
 
-    const provider = new ethers.providers.StaticJsonRpcProvider(
-      "https://subnets.avax.network/dexalot/mainnet/rpc",
-      {
-        chainId: 432204,
-        name: "dexalot-mainnet",
-      }
+    const pageNo = 0; // 0 scans all tokens
+    const [symbols, total, available] = await contract.getBalances(
+      evmAddress,
+      pageNo
     );
 
-    const contract = new ethers.Contract(
-      DEXALOT_CONTRACT_ADDRESS,
-      PORTFOLIO_ABI,
-      provider
-    );
+    const rows = symbols
+      .map((s: string, i: number) => {
+        const symbolString = bytes32ToString(s);
+        const tokenDetail = TOKEN_DETAILS.find(token => token.symbol === symbolString);
 
-    // const version = await contract.VERSION();
-    // console.log("Dexalot contract version:", version);
+        if (!tokenDetail) {
+          return {
+            symbol: symbolString,
+            total: total[i].toString(),
+            available: available[i].toString(),
+            symbolHex: s,
+          };
+        }
 
-    // const [symbols, totals, availables] = await contract.getBalances(
-    //   evmAddress,
-    //   0 // page 0 to get all asset balances
-    // );
+        const divisor = BigInt(10 ** tokenDetail.decimals);
+        const totalBigInt = BigInt(total[i].toString());
+        const availableBigInt = BigInt(available[i].toString());
 
-    // const balances: DexalotPortfolioBalance[] = [];
-    // const chartDataPoints: Array<[string, number]> = [];
+        return {
+          symbol: symbolString,
+          total: (Number(totalBigInt) / Number(divisor)).toString(),
+          available: (Number(availableBigInt) / Number(divisor)).toString(),
+          symbolHex: s,
+        };
+      })
+      // drop placeholder/empty rows
+      .filter((r: any) => r.symbolHex !== "0x0000000000000000000000000000000000000000000000000000000000000000" && r.total !== "0");
 
-    // for (let i = 0; i < symbols.length; i++) {
-    //   if (
-    //     symbols[i] ===
-    //       "0x0000000000000000000000000000000000000000000000000000000000000000" ||
-    //     totals[i].isZero()
-    //   ) {
-    //     break;
-    //   }
-
-    //   const symbolStr = bytes32ToString(symbols[i]);
-    //   const totalFormatted = ethers.utils.formatEther(totals[i]);
-    //   const availableFormatted = ethers.utils.formatEther(availables[i]);
-
-    //   balances.push({
-    //     symbol: symbolStr,
-    //     total: totalFormatted,
-    //     available: availableFormatted,
-    //   });
-
-    //   if (parseFloat(totalFormatted) > 0) {
-    //     chartDataPoints.push([symbolStr, parseFloat(totalFormatted)]);
-    //   }
-    // }
-
-    // const response: DexalotPortfolioResponse = {
-    //   balances,
-    //   chartData: {
-    //     title: "Portfolio Holdings",
-    //     description: "Token balances in your Dexalot portfolio",
-    //     chartType: "bar",
-    //     dataFormat: "currency",
-    //     metricLabels: ["Token", "Balance"],
-    //     dataPoints: chartDataPoints,
-    //   },
-    // };
+    console.log(rows);
 
     const response: DexalotPortfolioResponse = {
-      balances: [
-        {
-          symbol: "AVAX",
-          total: "0",
-          available: "0",
-        },
-        {
-          symbol: "USDC",
-          total: "5.857",
-          available: "5.857",
-        },
-      ],
-      chartData: {
-        title: "Portfolio Holdings",
-        description: "Token balances in your Dexalot portfolio",
-        chartType: "bar",
-        dataFormat: "currency",
-        metricLabels: ["Token", "Balance"],
-        dataPoints: [
-          [Date(), 0],
-          [Date(), 5.857],
-        ],
-      },
+      balances: [...rows],
     };
 
     return NextResponse.json(response, { status: 200 });
