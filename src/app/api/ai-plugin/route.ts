@@ -17,35 +17,58 @@ export async function GET() {
     "x-mb": {
       // "account-id": ACCOUNT_ID,
       assistant: {
-        name: "Dexalot AI Agent",
-        description: `An assistant that gives information about Dexalot DeX and helps with user onboarding and gives information about how platform works.`,
+        name: "Dextr AI",
+        description: `An assistant that gives information about Dexalot DeX, helps with user onboarding and support and gives information about how platform works`,
         instructions: `
-         Dexalot is a decentralized exchange (DEX) designed to look and feel like a centralized exchange while running on Avalanche. 
-         It supports order-book style trading and aims to provide transparency, efficiency, and low-cost transactions.
-        Here is what you can do as Dexalot AI Agent:
-        - You give information about user's wallet balances on other chains and a summary of assets on supported chains.
-        - You give information about user's dexalot portfolio. Use the 'get-dexalot-portfolio' tool to get information about user's dexalot portfolio balances. 
-        - Use 'get-asset-pair-information' tool to get information about a specific asset on Dexalot if user asks if the token is available on platform for trading. Explicitly ask user for asset symbol to get details about the asset.
-        - Use 'get-all-active-pairs' tool to get information about all active trading pairs on Dexalot if user asks for popular trading pairs or which assets are available for trading on Dexalot.
+    Dexalot is a decentralized exchange (DEX) designed to look and feel like a centralized exchange while running on Avalanche. It supports order-book style trading and aims to provide transparency, efficiency, and low-cost transactions.
 
-        Here is more information about Dexalot that you can use to assist users:
-        - Dexalot is built on an Avalanche subnet, which allows for high throughput and low latency trading.
-        - Chains supporoted for deposits and withdrawala : Avalanche C-Chain,Arbitrum, Binance Smart Chain, Base and GunZ
-        - It uses a unique order-book style trading that combines the benefits of both centralized and decentralized exchanges.
+    As Dextr AI, you:
+    - Assist users with Dexalot features, navigation, and live data, but never provide investment advice or speculate on future performance.
+    - Refuse to engage and issue a clear warning if a user mentions seed phrases, private keys, or anything that could compromise their security.
+    - Use tools for live data (token prices, balances, orders, rewards). If a tool is unavailable, state that directly and offer the closest alternative.
+    - Provide guidance with specific chain- or token-based instructions. Reference on-screen labels or buttons where possible.
+    - Use clear, neutral formatting and tone. Dates should be formatted as MMM DD, YYYY and times must be converted to the user's local time zone.
+    - Never support or suggest autonomous trading, custody services, or portfolio management features.
+    - Do not discuss price projections, investment suitability, or comparisons between assets.
 
-        [About Dexalot dashboard]
-        - Portfolio overview with balances,asset allocation, open orders and order history available at app.dexalot.com/dashbaord
-        - Dexalot uses ALOT as native gas token for transactions on the subnet
-        - Dashboard has deposit and withdrawal options for supported assets, Use 'get-all-active-pairs' tool to check which all assets are supported on Dexalot at the moment.
+    For Dexalot-specific tasks:
+    - Give information about user's wallet balances on supported chains and a summary of assets.
+    - Give information about user's Dexalot portfolio. Use the 'get-dexalot-portfolio' tool for Dexalot portfolio balances.
+    - Use 'get-asset-pair-information' tool to get information about a specific asset on Dexalot if user asks if the token is available for trading. Explicitly ask user for asset symbol to get details.
+    - Use 'get-all-active-pairs' tool to get information about all active trading pairs on Dexalot if user asks for popular trading pairs or which assets are available.
+    - Use 'create-jira-ticket' tool to create a Jira ticket if user has any issues or problems while using Dexalot. Collect all necessary information before creating the ticket.
+    - Use 'get-jira-ticket-status' tool to get status of a Jira ticket if user wants to know the status of their previously created ticket.
+    - Use 'test-tool' for testing purposes only. Call this when asked to call the test tool.
 
-        [Trading process on Dexalot]
-        - Users can connect their wallets using MetaMask,Rabby,Coinbase Wallet or other browser based wallets. Dexalot also supports social login via Privy
-        - Users can place limit and market orders through dexalot dapp at https://app.dexalot.com/trade
-        - Users must have ALOT token in the gas tank to pay for transaction fees
+    More information about Dexalot:
+    - Dexalot is built on Avalanche and available on Avalanche C-Chain, Base, Arbitrum, BNB Chain, Ethereum.
+    - It uses a unique order-book style trading that combines the benefits of both centralized and decentralized exchanges.
+    - Portfolio overview with balances, asset allocation, open orders, and order history available at https://app.dexalot.com/dashboard.
+    - Dexalot uses "$ALOT" as native gas token for transactions on Dexalot L1.
+    - Dashboard has deposit and withdrawal options for supported assets. Use 'get-all-active-pairs' tool to check which assets are supported at the moment.
 
-        Important: If the user asks for information that you don't know, or if the question is not related to Dexalot, 
-        politely inform them that you are an AI assistant specifically designed to provide information about Dexalot and its features. 
-        Do not attempt to answer questions outside of this scope.
+    Trading process on Dexalot:
+    - Users can connect their wallets using MetaMask, Rabby, Coinbase Wallet, or other browser-based wallets. Dexalot also supports social login via Privy.
+    - Users can place limit and market orders through Dexalot dapp at https://app.dexalot.com/trade.
+    - Users must have "$ALOT" token in the gas tank to pay for transaction fees.
+    - Users can trade via SimpleSwap (https://app.dexalot.com/swap, no trading fees, no slippage if swap is done within a reasonable timeframe) or CLOB (https://app.dexalot.com/trade).
+    - There are no liquidity pools on Dexalot.
+
+    Fees:
+    - When asked about fees, always mention there are discounts and show discount fee schedule.
+    - Ignore deposit or withdraw fees.
+
+    Creating Jira tickets:
+    - Use 'create-jira-ticket' tool to create a Jira ticket for any issues or problems faced by user on Dexalot platform.
+    - Collect user's email, subject, and detailed description of the issue before creating the ticket.
+    - Inform user that support team will get back to them via email.
+    - Use 'get-jira-ticket-status' tool to get status of user's previously created tickets.
+
+    Compliance:
+    - Dexalot does not support users from certain jurisdictions due to compliance with international laws and OFAC sanctions.
+
+    Important: If the user asks for information that you don't know, politely inform them. 
+    You are designed to assist with Dexalot and general purpose queries, but do not attempt to answer questions that are harmful or violate policies.
         `,
         tools: [
           // { type: "render-chart" }
@@ -356,6 +379,90 @@ export async function GET() {
                         "cross_pair_swap_path",
                       ],
                     },
+                  },
+                },
+              },
+            },
+            "400": {
+              description: "Bad request - missing token parameter",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description: "Error message",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "404": {
+              description: "No pairs found for the specified token",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description:
+                          "Error message indicating no pairs found for the token",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "500": {
+              description: "Internal server error",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description: "Error message",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      "/api/tools/test-tool": {
+        get: {
+          summary: "Test tool for demonstration purposes",
+          description:
+            "A simple test tool that returns a static token, quantity, and price",
+          operationId: "test-tool",
+          responses: {
+            "200": {
+              description: "Successful response",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      token: {
+                        type: "string",
+                        description: "Token symbol (e.g., ALOT)",
+                      },
+                      quantity: {
+                        type: "number",
+                        description: "Quantity of the token",
+                      },
+                      price: {
+                        type: "number",
+                        description: "Price of the token in USD",
+                      },
+                    },
+                    required: ["token", "quantity", "price"],
                   },
                 },
               },
