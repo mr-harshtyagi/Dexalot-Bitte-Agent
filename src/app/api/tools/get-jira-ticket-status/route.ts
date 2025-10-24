@@ -16,12 +16,13 @@ const JIRA_AUTH_HEADER = "Basic <your-jira-auth-token>";
 export async function GET(request: Request) {
   try {
     // Extract ticket key from query params (placeholder logic)
+    // OR user identifier can be used to query tickets active for that user
     const url = new URL(request.url);
-    const ticketKey = url.searchParams.get("ticketKey") || "SAMPLE-123";
+    const ticketId = url.searchParams.get("ticketId") || "SAMPLE-123";
 
     // Placeholder for hitting Jira API
     const response = await fetch(
-      JIRA_API_URL.replace("{ticketKey}", ticketKey),
+      JIRA_API_URL.replace("{ticketKey}", ticketId),
       {
         method: "GET",
         headers: {

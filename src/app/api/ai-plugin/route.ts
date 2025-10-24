@@ -435,6 +435,206 @@ export async function GET() {
           },
         },
       },
+      "/api/tools/create-jira-ticket": {
+        get: {
+          summary: "Create a Jira ticket for Dexalot support",
+          description:
+            "Create a Jira ticket in the Dexalot support system with user-provided details",
+          operationId: "create-jira-ticket",
+          parameters: [
+            {
+              name: "summary",
+              in: "query",
+              required: true,
+              schema: {
+                type: "string",
+              },
+              description: "Summary or title of the Jira ticket",
+            },
+            {
+              name: "description",
+              in: "query",
+              required: true,
+              schema: {
+                type: "string",
+              },
+              description: "Detailed description of the issue",
+            },
+            {
+              name: "issueType",
+              in: "query",
+              required: true,
+              schema: {
+                type: "string",
+              },
+              description: "Type of Jira issue (e.g., Bug, Task)",
+            },
+            {
+              name: "projectKey",
+              in: "query",
+              required: true,
+              schema: {
+                type: "string",
+              },
+              description: "Jira project key where the ticket will be created",
+            },
+          ],
+          responses: {
+            "200": {
+              description: "Jira ticket created successfully",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      id: {
+                        type: "string",
+                        description: "ID of the created Jira ticket",
+                      },
+                      key: {
+                        type: "string",
+                        description: "Key of the created Jira ticket",
+                      },
+                      self: {
+                        type: "string",
+                        description: "URL to access the created Jira ticket",
+                      },
+                    },
+                    required: ["id", "key", "self"],
+                  },
+                },
+              },
+            },
+            "400": {
+              description: "Bad request - invalid input data",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description: "Error message",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "404": {
+              description: "Ticket could not be created",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description:
+                          "Error message indicating ticket creation failure",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "500": {
+              description: "Internal server error",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description: "Error message",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      "/api/tools/get-jira-ticket-status": {
+        get: {
+          summary: "Get status of a Jira ticket",
+          description:
+            "Retrieve the current status of a Jira ticket using its ticket ID",
+          operationId: "get-jira-ticket-status",
+          parameters: [
+            {
+              name: "ticketId",
+              in: "query",
+              required: true,
+              schema: {
+                type: "string",
+              },
+              description: "The ID of the Jira ticket to retrieve status for",
+            },
+          ],
+          responses: {
+            "200": {
+              description: "Successful response with ticket status",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      id: {
+                        type: "string",
+                        description: "ID of the Jira ticket",
+                      },
+                      key: {
+                        type: "string",
+                        description: "Key of the Jira ticket",
+                      },
+                      status: {
+                        type: "string",
+                        description: "Current status of the Jira ticket",
+                      },
+                    },
+                    required: ["id", "key", "status"],
+                  },
+                },
+              },
+            },
+            "400": {
+              description: "Bad request - missing or invalid ticket ID",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description: "Error message",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "500": {
+              description: "Internal server error",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      error: {
+                        type: "string",
+                        description: "Error message",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       "/api/tools/test-tool": {
         get: {
           summary: "Test tool for demonstration purposes",

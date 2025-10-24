@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { BitteWidgetChat } from "@bitte-ai/chat";
 import "@bitte-ai/chat/styles.css";
 import { DexalotPairsResponse, TestToolResponse } from "@/lib/types";
+
 const TestToolComponent = ({ data }: { data: TestToolResponse }) => {
   return (
     <>

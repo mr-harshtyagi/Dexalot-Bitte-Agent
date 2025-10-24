@@ -1,13 +1,5 @@
 import { NextResponse } from "next/server";
 
-// Placeholder interface for Jira ticket creation request
-interface CreateJiraTicketRequest {
-  summary: string;
-  description: string;
-  issueType: string;
-  projectKey: string;
-}
-
 // Placeholder interface for Jira ticket creation response
 interface CreateJiraTicketResponse {
   id: string;
@@ -15,9 +7,14 @@ interface CreateJiraTicketResponse {
   self: string;
 }
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const body: CreateJiraTicketRequest = await request.json();
+    // Change parameters as needed
+    const { searchParams } = new URL(request.url);
+    const summary = searchParams.get("summary") || "";
+    const description = searchParams.get("description") || "";
+    const issueType = searchParams.get("issueType") || "Task";
+    const projectKey = searchParams.get("projectKey") || "TEST";
 
     // Replace this URL with your actual Jira API endpoint
     const JIRA_API_URL = "https://your-domain.atlassian.net/rest/api/3/issue";
@@ -30,10 +27,10 @@ export async function POST(request: Request) {
     // Sample payload for Jira API
     const payload = {
       fields: {
-        project: { key: body.projectKey },
-        summary: body.summary,
-        description: body.description,
-        issuetype: { name: body.issueType },
+        project: { key: projectKey },
+        summary: summary,
+        description: description,
+        issuetype: { name: issueType },
       },
     };
 
@@ -56,7 +53,7 @@ export async function POST(request: Request) {
 
     const data: CreateJiraTicketResponse = await response.json();
 
-    return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to create Jira ticket" },
