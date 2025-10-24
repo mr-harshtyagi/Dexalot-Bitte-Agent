@@ -435,6 +435,7 @@ export async function GET() {
           },
         },
       },
+      // Mock Tools for demonstration purposes
       "/api/tools/create-jira-ticket": {
         get: {
           summary: "Create a Jira ticket for Dexalot support",

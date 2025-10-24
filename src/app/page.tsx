@@ -10,10 +10,10 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center space-y-8 relative z-10 md:pt-16">
           <div className="space-y-4">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-              Dexalot Bitte
+              Dextr
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">
                 {" "}
-                Agent
+                AI Agent
               </span>
             </h1>
 
